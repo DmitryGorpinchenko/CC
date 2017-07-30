@@ -1,0 +1,66 @@
+I implemented Graph ADT and utilities for generating random graphs
+, finding the average length of single source shortest paths in a graph
+relying on Dijkstra's algorithm and for computing an MST of an input graph
+using Kruskul's algorithm. 
+
+Kruskul's and Dijkstra's algorithms are implemented
+in graph_utils.cpp file.
+
+Nodes in a graph are modeled by integer identifiers and graph itself
+represented as an array (vector from standard library) of edge_lists 
+(type alias for unordered_map from standard library) where exists a finite-length direct connection (edge) 
+between nodes i and j if i'th vector element's map has a record for key j with value equal to the edge cost.
+If there is no such direct connection, nodes i and j considered to be infinitely far away from each other
+(but possibly could reach each other 'in finite time' via intermediate steps in some path)
+
+Graph and PathFinder were implemented using the so called pimpl idiom
+when private details of class hidden in the implementation .cpp file instead of being
+exposed in the header .h file so that users can see only the public interface (API).
+
+I should mention that in code I used std::unique_ptr (smart pointer from the standard library
+with exclusive ownership of the object it points to). This is used instead of 
+C-type pointers because it automaticaly prevents from memory leaks (via destructor mechanism).
+
+
+Program could be compiled using recent g++ compiler as follows:
+
+    g++ -std=c++11 graph.cpp graph_utils.cpp main.cpp -o main
+
+and then run on Linux operating system as follows (for shortest paths part):
+
+    ./main
+    
+or as (std::cout << "MST):
+
+    ./main filename      
+    
+It should produce output that looks like this (for shortest path part of the assignment)
+
+Vertex number: 50	|	Edge cost range: (1, 10)	|	Edge density: 0.2	|	Avg SP cost: 7.85759
+Vertex number: 50	|	Edge cost range: (1, 10)	|	Edge density: 0.4	|	Avg SP cost: 4.58206
+    
+For MST part it produces (for the given test input file):
+
+MST cost = 29
+MST edges:
+3 12 1
+5 6 1
+2 9 1
+11 14 1
+14 18 1
+1 6 1
+1 17 1
+12 17 1
+5 18 1
+4 8 1
+4 7 1
+0 2 2
+5 16 2
+10 15 2
+15 19 2
+7 10 2
+4 15 2
+8 9 3
+9 12 3
+
+    
